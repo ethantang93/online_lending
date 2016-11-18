@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Borrower Page</title>
+  </head>
+  <body>
+    <h3>Name: <%= @borrower.first_name %> <%= @borrower.last_name %></h3>
+    <h3>Amount Need   $<%= @borrower.money%></h3>
+    <h3>Amount Raised   $<%= @borrower.raised%></h3>
+    <a href="/logout">logout</a>
+    <h3>List of People who lend you Money</h3>
+    <table>
+      <th>
+        <tr>
+          <td>Name</td>
+          <td>Email</td>
+          <td>Amount Lent</td>
+        </tr>
+      </th>
+      <tbody>
+        <% @histories.each do |history|%>
+        <tr>
+          <td><%= Lender.find(history.lender_id).first_name %> <%= Lender.find(history.lender_id).last_name %></td>
+          <td><%= Lender.find(history.lender_id).email %></td>
+          <td><%= history.amount %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </body>
+</html>

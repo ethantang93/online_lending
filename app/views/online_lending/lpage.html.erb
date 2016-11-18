@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Lender Page</title>
+  </head>
+  <body>
+    <h3>Name: <%= @lender.first_name %> <%= @lender.last_name %></h3>
+    <h3>Account Balance: $<%= @lender.money %></h3>
+    <a href="/logout">Logout</a>
+    <h3>List of People in need of help: </h3>
+    <table>
+      <th>
+        <tr>
+          <td>Name</td>
+          <td>Need Money For</td>
+          <td>Reason for Loan</td>
+          <td>Amount Needed</td>
+          <td>Amount Raised</td>
+          <td>Action</td>
+        </tr>
+      </th>
+      <tbody>
+        <% @borrowers.each do |borrower| %>
+        <tr>
+          <td><%= borrower.first_name %>  <%= borrower.last_name %></td>
+          <td><%= borrower.purpose %></td>
+          <td><%= borrower.description %></td>
+          <td><%= borrower.money %></td>
+          <td><%= borrower.raised %></td>
+          <td> <form class="" action="/online_lending/lend_money/<%= borrower.id %>" method="post">
+            <input type="text" name="amount" value="">
+            <input type="submit" name="lend" value="Lend">
+            <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+          </form></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <h3>List of People you lend money to: </h3>
+    <table>
+      <th>
+        <tr>
+          <td>Name</td>
+          <td>Need Money For</td>
+          <td>Reason for Loan</td>
+          <td>Amount Needed</td>
+          <td>Amount Raised</td>
+          <td>Amount Lent</td>
+        </tr>
+      </th>
+      <tbody>
+        <% @histories.each do |history| %>
+        <tr>
+          <td><%= Borrower.find(history.borrower_id).first_name%></td>
+          <td><%= Borrower.find(history.borrower_id).purpose%></td>
+          <td><%= Borrower.find(history.borrower_id).description%></td>
+          <td><%= Borrower.find(history.borrower_id).money%></td>
+          <td><%= Borrower.find(history.borrower_id).raised%></td>
+          <td><%= history.amount %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </body>
+</html>
