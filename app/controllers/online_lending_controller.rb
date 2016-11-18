@@ -80,13 +80,19 @@ class OnlineLendingController < ApplicationController
     if money_left < 0
       flash[:errors]=["Insufficient Funds"]
       redirect_to :back
-    elsif money_added > @borrower.money
+    elsif money_added >= @borrower.money
       flash[:errors]=["the borrower has enough money! "]
       redirect_to :back
     else
       @lender.update(money:money_left)
       @borrower.update(raised:money_added)
-      his = History.create(amount:params[:amount],lender:@lender, borrower:@borrower)
+      his = @lender.histories.find_by_borrower_id(params[:id])
+      if his
+        his.amount+=params[:amount].to_i
+        his.save
+      else
+        his = History.create(amount:params[:amount],lender:@lender, borrower:@borrower)
+      end
       redirect_to :back
     end
   end

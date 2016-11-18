@@ -4,6 +4,6 @@ class Lender < ActiveRecord::Base
   validates :email, :format =>{ :with => email_regex }, :uniqueness => { :case_sensitive => false}
   validates :password, presence: :true, on: :create, confirmation: true
   validates :money, presence: :true
-  has_many :hitories, dependent: :destroy
+  has_many :histories, dependent: :destroy
   has_many :lending_history, through: :histories, source: :borrower
 end
